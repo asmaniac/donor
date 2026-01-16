@@ -134,6 +134,7 @@ donor/
 - **Add Donor** (`/donors/new`): Form to create new donors
 - **Donations** (`/donations`): List of all donations linked to donors
 - **Add Donation** (`/donations/new`): Form to record new donations
+- **Settings** (`/settings`): Admin-only page for organization management and system stats
 - **AI Policy** (`/ai-policy`): Documentation of AI usage and safeguards
 - **Evidence** (`/evidence`): Assessment evidence and links
 - **Reflection** (`/reflection`): Learning and decision-making process
@@ -141,6 +142,16 @@ donor/
 ## 🔐 Authentication
 
 DonorConnect uses session-based authentication with HTTP-only cookies for security. Users must log in to access dashboard features. The system supports role-based access control with ADMIN and STAFF roles.
+
+**Admin-Only Features:**
+- Settings page (`/settings`) - View organization statistics and system settings
+- Full access to create/edit donors and donations
+- Future: User management interface
+
+**Staff Permissions:**
+- View and create donors and donations
+- Access dashboard and reports
+- Cannot access admin settings
 
 ## 🤖 AI Integration
 
@@ -184,6 +195,60 @@ npx prisma migrate dev --name migration_name
 # View database in browser
 npx prisma studio
 ```
+
+## 🚀 Deployment to Vercel
+
+### Prerequisites
+- A Vercel account ([sign up here](https://vercel.com))
+- A Neon PostgreSQL database (or other PostgreSQL database)
+- An OpenAI API key
+
+### Deployment Steps
+
+1. **Push your code to GitHub:**
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git remote add origin <your-github-repo-url>
+   git push -u origin main
+   ```
+
+2. **Import project to Vercel:**
+   - Go to [vercel.com](https://vercel.com) and click "Add New Project"
+   - Import your GitHub repository
+   - Vercel will auto-detect Next.js settings
+
+3. **Configure Environment Variables:**
+   In Vercel project settings, add these environment variables:
+   ```
+   DATABASE_URL=postgresql://USER:PASSWORD@HOST/DATABASE?schema=public&sslmode=require
+   NEXT_PUBLIC_APP_URL=https://your-app.vercel.app
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
+
+4. **Deploy:**
+   - Click "Deploy"
+   - Vercel will build and deploy your app
+   - Your app will be live at `https://your-app.vercel.app`
+
+5. **Run database migrations:**
+   After deployment, run migrations on your production database:
+   ```bash
+   npx prisma migrate deploy
+   ```
+
+6. **Seed production database (optional):**
+   ```bash
+   npx prisma db seed
+   ```
+
+### Post-Deployment Checklist
+- ✅ Verify environment variables are set correctly
+- ✅ Run database migrations
+- ✅ Test login functionality
+- ✅ Test AI features
+- ✅ Verify admin-only pages are protected
 
 ## 📝 License
 

@@ -14,9 +14,11 @@ export async function GET(request, { params }) {
       )
     }
 
+    const { id } = await params
+
     const donor = await prisma.donor.findFirst({
       where: {
-        id: params.id,
+        id: id,
         organizationId: user.organizationId
       }
     })

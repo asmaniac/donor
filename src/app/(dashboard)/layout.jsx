@@ -2,13 +2,14 @@
 import { getSessionUser } from '@/lib/session'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { Home, Users, Gift } from 'lucide-react'
+import { Home, Users, Gift, Settings } from 'lucide-react'
 import { LogoutButton } from '@/components/logout-button'
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
   { name: 'Donors', href: '/donors', icon: Users },
   { name: 'Donations', href: '/donations', icon: Gift },
+  { name: 'Settings', href: '/settings', icon: Settings, adminOnly: true },
 ]
 
 export default async function DashboardLayout({ children }) {
@@ -33,6 +34,10 @@ export default async function DashboardLayout({ children }) {
               </Link>
               <div className="ml-10 flex space-x-1">
                 {navigation.map((item) => {
+                  // Only show admin-only items to admins
+                  if (item.adminOnly && user.role !== 'ADMIN') {
+                    return null
+                  }
                   const Icon = item.icon
                   return (
                     <Link

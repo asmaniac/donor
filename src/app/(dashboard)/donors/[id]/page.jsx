@@ -45,6 +45,7 @@ export default function DonorDetailPage() {
   const generateAISummary = async () => {
     try {
       setLoadingSummary(true)
+      setError('')
       const response = await fetch('/api/ai/donor-summary', {
         method: 'POST',
         headers: {
@@ -53,12 +54,16 @@ export default function DonorDetailPage() {
         body: JSON.stringify({ donorId: params.id })
       })
 
-      if (!response.ok) throw new Error('Failed to generate summary')
-
       const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to generate summary')
+      }
+
       setAiSummary(data.summary)
     } catch (err) {
-      setError('Failed to generate AI summary')
+      setError(err.message || 'Failed to generate AI summary')
+      console.error('AI Summary Error:', err)
     } finally {
       setLoadingSummary(false)
     }
@@ -163,6 +168,11 @@ export default function DonorDetailPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-lg border border-red-200 text-sm">
+                {error}
+              </div>
+            )}
             {aiSummary ? (
               <div className="space-y-4">
                 <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
@@ -175,7 +185,7 @@ export default function DonorDetailPage() {
             ) : (
               <div className="space-y-4">
                 <p className="text-sm text-gray-600">
-                  Get an AI-powered summary of this donor's activity and recommendations.
+                  Get an AI-powered summary of this donor's activity and recommendations using OpenAI GPT-4.
                 </p>
                 <Button 
                   onClick={generateAISummary} 
@@ -185,7 +195,7 @@ export default function DonorDetailPage() {
                   {loadingSummary ? (
                     <>
                       <Sparkles className="h-4 w-4 mr-2 animate-pulse" />
-                      Generating...
+                      Generating with AI...
                     </>
                   ) : (
                     <>
