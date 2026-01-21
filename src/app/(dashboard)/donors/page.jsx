@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Plus, Search, Sparkles } from 'lucide-react'
+import { Plus, Search, Sparkles, Users } from 'lucide-react'
 import { formatCurrency, formatDate } from '@/lib/utils'
 
 export default function DonorsPage() {
@@ -41,16 +41,16 @@ export default function DonorsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-black bg-gradient-to-r from-purple-300 via-blue-300 to-cyan-300 bg-clip-text text-transparent">
             Donors
           </h1>
-          <p className="text-gray-600 mt-2">Manage your donor database</p>
+          <p className="text-gray-400 mt-2">Manage your donor database</p>
         </div>
         <Link href="/donors/new">
-          <Button className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 shadow-lg shadow-purple-500/50">
+          <Button className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 shadow-lg shadow-purple-500/50 text-white font-medium">
             <Plus className="mr-2 h-4 w-4" />
             Add Donor
           </Button>
@@ -58,37 +58,40 @@ export default function DonorsPage() {
       </div>
 
       {/* Search */}
-      <Card className="border-purple-200 shadow-md">
-        <CardContent className="p-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-400 h-5 w-5" />
-            <Input
-              type="text"
-              placeholder="Search donors by name or email..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 border-purple-200 focus:border-purple-500 focus:ring-purple-500"
-            />
-          </div>
-        </CardContent>
-      </Card>
+      <div className="group relative overflow-hidden rounded-2xl">
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 opacity-0 group-hover:opacity-10 transition duration-500 blur"></div>
+        <Card className="relative border-purple-500/20 bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl">
+          <CardContent className="p-6">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-400 h-5 w-5" />
+              <Input
+                type="text"
+                placeholder="Search donors by name or email..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 border-purple-500/30 bg-slate-800/50 text-white placeholder-gray-500 focus:border-purple-400/60 focus:ring-purple-400/50"
+              />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Error State */}
       {error && (
-        <Card className="border-red-200 bg-red-50">
+        <Card className="border-red-500/30 bg-red-500/10 backdrop-blur-xl">
           <CardContent className="p-4">
-            <p className="text-red-700">Error: {error}</p>
+            <p className="text-red-300">Error: {error}</p>
           </CardContent>
         </Card>
       )}
 
       {/* Loading State */}
       {loading && (
-        <Card>
+        <Card className="border-purple-500/20 bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl">
           <CardContent className="p-12 text-center">
-            <div className="flex items-center justify-center gap-2 text-purple-600">
-              <Sparkles className="h-5 w-5 animate-pulse" />
-              <p className="text-gray-600">Loading donors...</p>
+            <div className="flex items-center justify-center gap-2">
+              <Sparkles className="h-5 w-5 text-purple-400 animate-pulse" />
+              <p className="text-gray-400">Loading donors...</p>
             </div>
           </CardContent>
         </Card>
@@ -96,63 +99,70 @@ export default function DonorsPage() {
 
       {/* Donors List */}
       {!loading && !error && (
-        <Card className="border-purple-200 shadow-lg">
-          <CardHeader className="bg-gradient-to-r from-purple-50 to-purple-100 border-b border-purple-200">
-            <CardTitle className="text-purple-900">Donor List</CardTitle>
+        <Card className="border-purple-500/20 shadow-xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl hover:shadow-2xl transition-all duration-300">
+          <CardHeader className="pb-4 border-b border-purple-500/20">
+            <CardTitle className="text-white flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-purple-500/30">
+                <Users className="h-5 w-5 text-purple-400" />
+              </div>
+              Donor List
+            </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-purple-50 hover:bg-purple-50">
-                  <TableHead className="font-semibold text-purple-900">Name</TableHead>
-                  <TableHead className="font-semibold text-purple-900">Email</TableHead>
-                  <TableHead className="font-semibold text-purple-900">Total Gifts</TableHead>
-                  <TableHead className="font-semibold text-purple-900">Total Amount</TableHead>
-                  <TableHead className="font-semibold text-purple-900">Risk Level</TableHead>
-                  <TableHead className="font-semibold text-purple-900">Last Gift</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {donors.length > 0 ? (
-                  donors.map((donor) => (
-                    <TableRow 
-                      key={donor.id} 
-                      className="hover:bg-purple-50/50 transition-colors cursor-pointer"
-                      onClick={() => router.push(`/donors/${donor.id}`)}
-                    >
-                      <TableCell className="font-medium text-gray-900">
-                        <Link href={`/donors/${donor.id}`} className="hover:text-purple-600 transition-colors">
-                          {donor.firstName} {donor.lastName}
-                        </Link>
-                      </TableCell>
-                      <TableCell className="text-gray-600">{donor.email || 'N/A'}</TableCell>
-                      <TableCell className="font-medium">{donor.totalGifts}</TableCell>
-                      <TableCell className="font-semibold text-purple-700">{formatCurrency(donor.totalAmount)}</TableCell>
-                      <TableCell>
-                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          donor.retentionRisk === 'HIGH' || donor.retentionRisk === 'CRITICAL' ? 'bg-red-100 text-red-800 border border-red-200' :
-                          donor.retentionRisk === 'MEDIUM' ? 'bg-yellow-100 text-yellow-800 border border-yellow-200' :
-                          donor.retentionRisk === 'LOW' ? 'bg-green-100 text-green-800 border border-green-200' :
-                          'bg-gray-100 text-gray-800 border border-gray-200'
-                        }`}>
-                          {donor.retentionRisk}
-                        </span>
-                      </TableCell>
-                      <TableCell className="text-gray-600">{formatDate(donor.lastGiftDate)}</TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={6} className="text-center py-12 text-gray-500">
-                      <div className="flex flex-col items-center gap-2">
-                        <Sparkles className="h-8 w-8 text-purple-300" />
-                        <p>No donors found</p>
-                      </div>
-                    </TableCell>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-b border-purple-500/20 hover:bg-transparent">
+                    <TableHead className="font-semibold text-purple-300">Name</TableHead>
+                    <TableHead className="font-semibold text-purple-300">Email</TableHead>
+                    <TableHead className="font-semibold text-purple-300">Total Gifts</TableHead>
+                    <TableHead className="font-semibold text-purple-300">Total Amount</TableHead>
+                    <TableHead className="font-semibold text-purple-300">Risk Level</TableHead>
+                    <TableHead className="font-semibold text-purple-300">Last Gift</TableHead>
                   </TableRow>
-                )}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {donors.length > 0 ? (
+                    donors.map((donor) => (
+                      <TableRow 
+                        key={donor.id} 
+                        className="border-b border-purple-500/10 hover:bg-purple-500/5 transition-colors cursor-pointer smooth-transition"
+                        onClick={() => router.push(`/donors/${donor.id}`)}
+                      >
+                        <TableCell className="font-medium text-white">
+                          <Link href={`/donors/${donor.id}`} className="hover:text-purple-300 transition-colors">
+                            {donor.firstName} {donor.lastName}
+                          </Link>
+                        </TableCell>
+                        <TableCell className="text-gray-400">{donor.email || 'N/A'}</TableCell>
+                        <TableCell className="font-medium text-gray-300">{donor.totalGifts}</TableCell>
+                        <TableCell className="font-semibold text-green-400">{formatCurrency(donor.totalAmount)}</TableCell>
+                        <TableCell>
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                            donor.retentionRisk === 'HIGH' || donor.retentionRisk === 'CRITICAL' ? 'bg-red-500/20 text-red-300 border border-red-500/30' :
+                            donor.retentionRisk === 'MEDIUM' ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30' :
+                            donor.retentionRisk === 'LOW' ? 'bg-green-500/20 text-green-300 border border-green-500/30' :
+                            'bg-gray-500/20 text-gray-300 border border-gray-500/30'
+                          }`}>
+                            {donor.retentionRisk}
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-gray-400">{formatDate(donor.lastGiftDate)}</TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={6} className="text-center py-12">
+                        <div className="flex flex-col items-center gap-2">
+                          <Sparkles className="h-8 w-8 text-purple-400/50" />
+                          <p className="text-gray-400">No donors found</p>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
       )}

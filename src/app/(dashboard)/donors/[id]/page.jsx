@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ArrowLeft, Sparkles } from 'lucide-react'
+import { ArrowLeft, Sparkles, User } from 'lucide-react'
 import { formatCurrency, formatDate } from '@/lib/utils'
 
 export default function DonorDetailPage() {
@@ -71,9 +71,9 @@ export default function DonorDetailPage() {
 
   if (loading) {
     return (
-      <Card>
+      <Card className="border-purple-500/20 bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl">
         <CardContent className="p-12 text-center">
-          <div className="flex items-center justify-center gap-2 text-purple-600">
+          <div className="flex items-center justify-center gap-2 text-purple-400">
             <Sparkles className="h-5 w-5 animate-pulse" />
             <p>Loading...</p>
           </div>
@@ -84,10 +84,12 @@ export default function DonorDetailPage() {
 
   if (error || !donor) {
     return (
-      <div className="p-8">
-        <p className="text-red-600">Error: {error || 'Donor not found'}</p>
+      <div className="p-8 space-y-4">
+        <div className="p-4 bg-red-500/10 text-red-300 rounded-lg border border-red-500/30">
+          Error: {error || 'Donor not found'}
+        </div>
         <Link href="/donors">
-          <Button className="mt-4">Back to Donors</Button>
+          <Button className="border-purple-500/30 text-purple-300 hover:bg-purple-500/20">Back to Donors</Button>
         </Link>
       </div>
     )
@@ -97,144 +99,160 @@ export default function DonorDetailPage() {
     <div className="space-y-6">
       <div className="flex items-center gap-4">
         <Link href="/donors">
-          <Button variant="outline" size="sm" className="border-purple-200 hover:bg-purple-50">
+          <Button variant="outline" size="sm" className="border-purple-500/30 text-purple-300 hover:bg-purple-500/20">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
           </Button>
         </Link>
         <div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-black bg-gradient-to-r from-purple-300 via-blue-300 to-cyan-300 bg-clip-text text-transparent">
             {donor.firstName} {donor.lastName}
           </h1>
-          <p className="text-gray-600">{donor.email || 'No email'}</p>
+          <p className="text-gray-400 text-sm">{donor.email || 'No email'}</p>
         </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
-        <Card className="border-purple-200 shadow-lg">
-          <CardHeader className="bg-gradient-to-r from-purple-50 to-purple-100 border-b border-purple-200">
-            <CardTitle className="text-purple-900">Donor Information</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3 pt-6">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-gray-500">Email</p>
-                <p className="font-medium">{donor.email || 'N/A'}</p>
+        <div className="group relative overflow-hidden rounded-2xl">
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-10 transition duration-500 blur"></div>
+          <Card className="relative border-purple-500/20 bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl">
+            <CardHeader className="pb-4 border-b border-purple-500/20">
+              <CardTitle className="text-white flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30">
+                  <User className="h-5 w-5 text-purple-400" />
+                </div>
+                Donor Information
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 pt-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wider">Email</p>
+                  <p className="font-medium text-white">{donor.email || 'N/A'}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wider">Phone</p>
+                  <p className="font-medium text-white">{donor.phone || 'N/A'}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wider">Status</p>
+                  <p className="font-medium text-white">{donor.status}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wider">Retention Risk</p>
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium inline-block ${
+                    donor.retentionRisk === 'HIGH' || donor.retentionRisk === 'CRITICAL' ? 'bg-red-500/20 text-red-300 border border-red-500/30' :
+                    donor.retentionRisk === 'MEDIUM' ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30' :
+                    donor.retentionRisk === 'LOW' ? 'bg-green-500/20 text-green-300 border border-green-500/30' :
+                    'bg-gray-500/20 text-gray-300 border border-gray-500/30'
+                  }`}>
+                    {donor.retentionRisk}
+                  </span>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wider">Total Gifts</p>
+                  <p className="font-semibold text-purple-300 text-lg">{donor.totalGifts}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wider">Total Amount</p>
+                  <p className="font-semibold text-purple-300 text-lg">{formatCurrency(donor.totalAmount)}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wider">First Gift</p>
+                  <p className="font-medium text-white">{formatDate(donor.firstGiftDate)}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wider">Last Gift</p>
+                  <p className="font-medium text-white">{formatDate(donor.lastGiftDate)}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm text-gray-500">Phone</p>
-                <p className="font-medium">{donor.phone || 'N/A'}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Status</p>
-                <p className="font-medium">{donor.status}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Retention Risk</p>
-                <span className={`px-3 py-1 rounded-full text-xs font-medium inline-block ${
-                  donor.retentionRisk === 'HIGH' || donor.retentionRisk === 'CRITICAL' ? 'bg-red-100 text-red-800 border border-red-200' :
-                  donor.retentionRisk === 'MEDIUM' ? 'bg-yellow-100 text-yellow-800 border border-yellow-200' :
-                  donor.retentionRisk === 'LOW' ? 'bg-green-100 text-green-800 border border-green-200' :
-                  'bg-gray-100 text-gray-800 border border-gray-200'
-                }`}>
-                  {donor.retentionRisk}
-                </span>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Total Gifts</p>
-                <p className="font-semibold text-purple-700">{donor.totalGifts}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Total Amount</p>
-                <p className="font-semibold text-purple-700">{formatCurrency(donor.totalAmount)}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">First Gift</p>
-                <p className="font-medium">{formatDate(donor.firstGiftDate)}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Last Gift</p>
-                <p className="font-medium">{formatDate(donor.lastGiftDate)}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
 
-        <Card className="border-purple-200 shadow-lg">
-          <CardHeader className="bg-gradient-to-r from-purple-50 to-purple-100 border-b border-purple-200">
-            <CardTitle className="text-purple-900 flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-purple-600" />
-              AI-Powered Summary
-            </CardTitle>
+        <div className="group relative overflow-hidden rounded-2xl">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 opacity-0 group-hover:opacity-10 transition duration-500 blur"></div>
+          <Card className="relative border-blue-500/20 bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl">
+            <CardHeader className="pb-4 border-b border-blue-500/20">
+              <CardTitle className="text-white flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30">
+                  <Sparkles className="h-5 w-5 text-blue-400" />
+                </div>
+                AI-Powered Summary
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6">
+              {error && (
+                <div className="mb-4 p-3 bg-red-500/10 text-red-300 rounded-lg border border-red-500/30 text-sm">
+                  {error}
+                </div>
+              )}
+              {aiSummary ? (
+                <div className="space-y-4">
+                  <div className="p-4 bg-blue-500/10 rounded-lg border border-blue-500/30">
+                    <p className="text-sm text-gray-300 whitespace-pre-line leading-relaxed">{aiSummary}</p>
+                  </div>
+                  <Button onClick={generateAISummary} variant="outline" size="sm" className="border-blue-500/30 text-blue-300 hover:bg-blue-500/20">
+                    Regenerate Summary
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <p className="text-sm text-gray-400">
+                    Get an AI-powered summary of this donor's activity and recommendations using OpenAI GPT-4.
+                  </p>
+                  <Button 
+                    onClick={generateAISummary} 
+                    disabled={loadingSummary}
+                    className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 shadow-lg shadow-blue-500/50 text-white font-medium"
+                  >
+                    {loadingSummary ? (
+                      <>
+                        <Sparkles className="h-4 w-4 mr-2 animate-pulse" />
+                        Generating with AI...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="h-4 w-4 mr-2" />
+                        Generate AI Summary
+                      </>
+                    )}
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      <div className="group relative overflow-hidden rounded-2xl">
+        <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-500 opacity-0 group-hover:opacity-10 transition duration-500 blur"></div>
+        <Card className="relative border-green-500/20 bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl">
+          <CardHeader className="pb-4 border-b border-green-500/20">
+            <CardTitle className="text-white">Donation History</CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
-            {error && (
-              <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-lg border border-red-200 text-sm">
-                {error}
-              </div>
-            )}
-            {aiSummary ? (
-              <div className="space-y-4">
-                <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
-                  <p className="text-sm text-gray-700 whitespace-pre-line leading-relaxed">{aiSummary}</p>
-                </div>
-                <Button onClick={generateAISummary} variant="outline" size="sm" className="border-purple-200 hover:bg-purple-50">
-                  Regenerate Summary
-                </Button>
+            {donations.length > 0 ? (
+              <div className="space-y-3">
+                {donations.map((donation) => (
+                  <div key={donation.id} className="flex justify-between items-center p-4 border border-green-500/20 rounded-lg hover:bg-green-500/5 transition-colors group/item">
+                    <div>
+                      <p className="font-semibold text-lg text-green-300">{formatCurrency(donation.amount)}</p>
+                      <p className="text-sm text-gray-400">{formatDate(donation.date)}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-medium text-white">{donation.type}</p>
+                      <p className="text-sm text-gray-400">{donation.method || 'N/A'}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : (
-              <div className="space-y-4">
-                <p className="text-sm text-gray-600">
-                  Get an AI-powered summary of this donor's activity and recommendations using OpenAI GPT-4.
-                </p>
-                <Button 
-                  onClick={generateAISummary} 
-                  disabled={loadingSummary}
-                  className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 shadow-lg shadow-purple-500/50"
-                >
-                  {loadingSummary ? (
-                    <>
-                      <Sparkles className="h-4 w-4 mr-2 animate-pulse" />
-                      Generating with AI...
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="h-4 w-4 mr-2" />
-                      Generate AI Summary
-                    </>
-                  )}
-                </Button>
-              </div>
+              <p className="text-gray-400 text-center py-8">No donations recorded yet.</p>
             )}
           </CardContent>
         </Card>
       </div>
-
-      <Card className="border-purple-200 shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-purple-50 to-purple-100 border-b border-purple-200">
-          <CardTitle className="text-purple-900">Donation History</CardTitle>
-        </CardHeader>
-        <CardContent className="pt-6">
-          {donations.length > 0 ? (
-            <div className="space-y-3">
-              {donations.map((donation) => (
-                <div key={donation.id} className="flex justify-between items-center p-4 border border-purple-200 rounded-lg hover:bg-purple-50 transition-colors">
-                  <div>
-                    <p className="font-semibold text-lg text-purple-700">{formatCurrency(donation.amount)}</p>
-                    <p className="text-sm text-gray-600">{formatDate(donation.date)}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-medium">{donation.type}</p>
-                    <p className="text-sm text-gray-600">{donation.method || 'N/A'}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-gray-600 text-center py-8">No donations recorded yet.</p>
-          )}
-        </CardContent>
-      </Card>
     </div>
   )
 }

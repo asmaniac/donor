@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Gift } from 'lucide-react'
 import Link from 'next/link'
 
 export default function NewDonationPage() {
@@ -79,147 +79,155 @@ export default function NewDonationPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="mb-6">
+    <div className="max-w-2xl mx-auto space-y-8">
+      <div className="space-y-4">
         <Link href="/donations">
-          <Button variant="outline" size="sm" className="mb-4 border-purple-200 hover:bg-purple-50">
+          <Button variant="outline" size="sm" className="border-purple-500/30 text-purple-300 hover:bg-purple-500/20">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Donations
           </Button>
         </Link>
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">
+        <h1 className="text-4xl font-black bg-gradient-to-r from-purple-300 via-blue-300 to-cyan-300 bg-clip-text text-transparent">
           Add New Donation
         </h1>
       </div>
 
-      <Card className="border-purple-200 shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-purple-50 to-purple-100 border-b border-purple-200">
-          <CardTitle className="text-purple-900">Donation Information</CardTitle>
-        </CardHeader>
-        <CardContent className="pt-6">
-          {success && (
-            <div className="mb-4 p-4 bg-green-50 text-green-700 rounded-lg border border-green-200">
-              ✓ Donation recorded successfully! Redirecting...
-            </div>
-          )}
-          {error && (
-            <div className="mb-4 p-4 bg-red-50 text-red-700 rounded-lg border border-red-200">
-              {error}
-            </div>
-          )}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="donorId" className="text-gray-700 font-medium">Donor *</Label>
-              <select
-                id="donorId"
-                required
-                value={formData.donorId}
-                onChange={(e) => setFormData({ ...formData, donorId: e.target.value })}
-                disabled={isSubmitting}
-                className="flex h-10 w-full rounded-md border border-purple-200 bg-background px-3 py-2 text-sm focus:border-purple-500 focus:ring-purple-500"
-              >
-                <option value="">Select a donor</option>
-                {donors.map((donor) => (
-                  <option key={donor.id} value={donor.id}>
-                    {donor.firstName} {donor.lastName} {donor.email ? `(${donor.email})` : ''}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="amount" className="text-gray-700 font-medium">Amount ($) *</Label>
-                <Input
-                  id="amount"
-                  type="number"
-                  step="0.01"
-                  min="0.01"
-                  required
-                  value={formData.amount}
-                  onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                  disabled={isSubmitting}
-                  className="border-purple-200 focus:border-purple-500 focus:ring-purple-500"
-                />
+      <div className="group relative overflow-hidden rounded-2xl">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 opacity-0 group-hover:opacity-10 transition duration-500 blur"></div>
+        <Card className="relative border-blue-500/20 bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl">
+          <CardHeader className="pb-4 border-b border-blue-500/20">
+            <CardTitle className="text-white flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30">
+                <Gift className="h-5 w-5 text-blue-400" />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="date" className="text-gray-700 font-medium">Date *</Label>
-                <Input
-                  id="date"
-                  type="date"
-                  required
-                  value={formData.date}
-                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                  disabled={isSubmitting}
-                  className="border-purple-200 focus:border-purple-500 focus:ring-purple-500"
-                />
+              Donation Information
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-6">
+            {success && (
+              <div className="mb-4 p-4 bg-green-500/10 text-green-300 rounded-lg border border-green-500/30">
+                ✓ Donation recorded successfully! Redirecting...
               </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
+            )}
+            {error && (
+              <div className="mb-4 p-4 bg-red-500/10 text-red-300 rounded-lg border border-red-500/30">
+                {error}
+              </div>
+            )}
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="type" className="text-gray-700 font-medium">Type *</Label>
+                <Label htmlFor="donorId" className="text-gray-300 font-medium">Donor *</Label>
                 <select
-                  id="type"
+                  id="donorId"
                   required
-                  value={formData.type}
-                  onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                  value={formData.donorId}
+                  onChange={(e) => setFormData({ ...formData, donorId: e.target.value })}
                   disabled={isSubmitting}
-                  className="flex h-10 w-full rounded-md border border-purple-200 bg-background px-3 py-2 text-sm focus:border-purple-500 focus:ring-purple-500"
+                  className="flex h-10 w-full rounded-md border border-blue-500/30 bg-slate-800/50 text-white px-3 py-2 text-sm focus:border-blue-400/60 focus:ring-blue-400/50 placeholder-gray-500"
                 >
-                  <option value="ONE_TIME">One Time</option>
-                  <option value="RECURRING">Recurring</option>
-                  <option value="PLEDGE">Pledge</option>
-                  <option value="IN_KIND">In Kind</option>
+                  <option value="" className="bg-slate-900 text-white">Select a donor</option>
+                  {donors.map((donor) => (
+                    <option key={donor.id} value={donor.id} className="bg-slate-900 text-white">
+                      {donor.firstName} {donor.lastName} {donor.email ? `(${donor.email})` : ''}
+                    </option>
+                  ))}
                 </select>
               </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="amount" className="text-gray-300 font-medium">Amount ($) *</Label>
+                  <Input
+                    id="amount"
+                    type="number"
+                    step="0.01"
+                    min="0.01"
+                    required
+                    value={formData.amount}
+                    onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                    disabled={isSubmitting}
+                    className="border-blue-500/30 bg-slate-800/50 text-white placeholder-gray-500 focus:border-blue-400/60 focus:ring-blue-400/50"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="date" className="text-gray-300 font-medium">Date *</Label>
+                  <Input
+                    id="date"
+                    type="date"
+                    required
+                    value={formData.date}
+                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                    disabled={isSubmitting}
+                    className="border-blue-500/30 bg-slate-800/50 text-white placeholder-gray-500 focus:border-blue-400/60 focus:ring-blue-400/50"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="type" className="text-gray-300 font-medium">Type *</Label>
+                  <select
+                    id="type"
+                    required
+                    value={formData.type}
+                    onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                    disabled={isSubmitting}
+                    className="flex h-10 w-full rounded-md border border-blue-500/30 bg-slate-800/50 text-white px-3 py-2 text-sm focus:border-blue-400/60 focus:ring-blue-400/50"
+                  >
+                    <option value="ONE_TIME" className="bg-slate-900 text-white">One Time</option>
+                    <option value="RECURRING" className="bg-slate-900 text-white">Recurring</option>
+                    <option value="PLEDGE" className="bg-slate-900 text-white">Pledge</option>
+                    <option value="IN_KIND" className="bg-slate-900 text-white">In Kind</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="method" className="text-gray-300 font-medium">Payment Method</Label>
+                  <Input
+                    id="method"
+                    type="text"
+                    placeholder="e.g., Credit Card, Check, Wire"
+                    value={formData.method}
+                    onChange={(e) => setFormData({ ...formData, method: e.target.value })}
+                    disabled={isSubmitting}
+                    className="border-blue-500/30 bg-slate-800/50 text-white placeholder-gray-500 focus:border-blue-400/60 focus:ring-blue-400/50"
+                  />
+                </div>
+              </div>
+
               <div className="space-y-2">
-                <Label htmlFor="method" className="text-gray-700 font-medium">Payment Method</Label>
-                <Input
-                  id="method"
-                  type="text"
-                  placeholder="e.g., Credit Card, Check, Wire"
-                  value={formData.method}
-                  onChange={(e) => setFormData({ ...formData, method: e.target.value })}
+                <Label htmlFor="notes" className="text-gray-300 font-medium">Notes</Label>
+                <Textarea
+                  id="notes"
+                  value={formData.notes}
+                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   disabled={isSubmitting}
-                  className="border-purple-200 focus:border-purple-500 focus:ring-purple-500"
+                  rows={3}
+                  className="border-blue-500/30 bg-slate-800/50 text-white placeholder-gray-500 focus:border-blue-400/60 focus:ring-blue-400/50"
                 />
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="notes" className="text-gray-700 font-medium">Notes</Label>
-              <Textarea
-                id="notes"
-                value={formData.notes}
-                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                disabled={isSubmitting}
-                rows={3}
-                className="border-purple-200 focus:border-purple-500 focus:ring-purple-500"
-              />
-            </div>
-
-            <div className="flex gap-4 pt-4">
-              <Button 
-                type="submit" 
-                className="flex-1 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 shadow-lg shadow-purple-500/50" 
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Recording...' : 'Record Donation'}
-              </Button>
-              <Button 
-                type="button" 
-                variant="outline"
-                onClick={() => router.push('/donations')}
-                disabled={isSubmitting}
-                className="border-purple-200 hover:bg-purple-50"
-              >
-                Cancel
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+              <div className="flex gap-4 pt-4">
+                <Button 
+                  type="submit" 
+                  className="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 shadow-lg shadow-blue-500/50 text-white font-medium" 
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Recording...' : 'Record Donation'}
+                </Button>
+                <Button 
+                  type="button" 
+                  variant="outline"
+                  onClick={() => router.push('/donations')}
+                  disabled={isSubmitting}
+                  className="border-blue-500/30 text-blue-300 hover:bg-blue-500/20"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }

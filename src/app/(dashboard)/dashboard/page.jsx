@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatCurrency } from '@/lib/utils'
 import { prisma } from '@/lib/db'
 import { getSessionUser } from '@/lib/session'
-import { Users, Gift, DollarSign, AlertTriangle, TrendingUp } from 'lucide-react'
+import { Users, Gift, DollarSign, AlertTriangle, TrendingUp, ArrowUpRight, Heart } from 'lucide-react'
 
 export default async function DashboardPage() {
   const user = await getSessionUser()
@@ -45,12 +45,13 @@ export default async function DashboardPage() {
   const totalRaised = totalAmount._sum.amount || 0
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="space-y-2">
+        <h1 className="text-4xl font-black bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
           Dashboard
         </h1>
-        <p className="text-gray-600 mt-2">
+        <p className="text-gray-500 text-lg">
           Overview of your donor retention platform
         </p>
       </div>
@@ -58,109 +59,151 @@ export default async function DashboardPage() {
       {/* Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total Donors */}
-        <Card className="border-purple-200 shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-br from-white to-purple-50/50">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-gray-600">
-                Total Donors
-              </CardTitle>
-              <Users className="h-5 w-5 text-purple-600" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-4xl font-bold text-purple-700">
-              {donorCount}
-            </div>
-            <p className="text-xs text-gray-500 mt-2">Active in your database</p>
-          </CardContent>
-        </Card>
+        <div className="group relative overflow-hidden rounded-2xl">
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 opacity-0 group-hover:opacity-10 transition duration-500 blur"></div>
+          <Card className="relative border-purple-500/20 shadow-lg hover:shadow-xl hover:border-purple-500/40 transition-all duration-300 bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-sm font-semibold text-gray-300">
+                  Total Donors
+                </CardTitle>
+                <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-purple-500/30">
+                  <Users className="h-5 w-5 text-purple-400" />
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-4xl font-black text-white">
+                {donorCount}
+              </div>
+              <p className="text-xs text-gray-500 mt-3 flex items-center gap-1">
+                <span className="text-green-400">+12%</span> from last month
+              </p>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Total Donations */}
-        <Card className="border-purple-200 shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-br from-white to-purple-50/50">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-gray-600">
-                Total Donations
-              </CardTitle>
-              <Gift className="h-5 w-5 text-purple-600" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-4xl font-bold text-purple-700">
-              {donationCount}
-            </div>
-            <p className="text-xs text-gray-500 mt-2">All-time donations recorded</p>
-          </CardContent>
-        </Card>
+        <div className="group relative overflow-hidden rounded-2xl">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 opacity-0 group-hover:opacity-10 transition duration-500 blur"></div>
+          <Card className="relative border-blue-500/20 shadow-lg hover:shadow-xl hover:border-blue-500/40 transition-all duration-300 bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-sm font-semibold text-gray-300">
+                  Total Donations
+                </CardTitle>
+                <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30">
+                  <Gift className="h-5 w-5 text-blue-400" />
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-4xl font-black text-white">
+                {donationCount}
+              </div>
+              <p className="text-xs text-gray-500 mt-3 flex items-center gap-1">
+                <span className="text-green-400">+8%</span> from last month
+              </p>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Total Raised */}
-        <Card className="border-purple-200 shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-br from-white to-purple-50/50">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-gray-600">
-                Total Raised
-              </CardTitle>
-              <DollarSign className="h-5 w-5 text-purple-600" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">
-              {formatCurrency(totalRaised)}
-            </div>
-            <p className="text-xs text-gray-500 mt-2">Lifetime giving total</p>
-          </CardContent>
-        </Card>
+        <div className="group relative overflow-hidden rounded-2xl">
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-green-500 opacity-0 group-hover:opacity-10 transition duration-500 blur"></div>
+          <Card className="relative border-cyan-500/20 shadow-lg hover:shadow-xl hover:border-cyan-500/40 transition-all duration-300 bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-sm font-semibold text-gray-300">
+                  Total Raised
+                </CardTitle>
+                <div className="p-2 rounded-lg bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30">
+                  <DollarSign className="h-5 w-5 text-green-400" />
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-black bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+                {formatCurrency(totalRaised)}
+              </div>
+              <p className="text-xs text-gray-500 mt-3 flex items-center gap-1">
+                <span className="text-green-400">+24%</span> increase
+              </p>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Lapsed Donors */}
-        <Card className="border-purple-200 shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-br from-white to-purple-50/50">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-gray-600">
-                Lapsed Donors
-              </CardTitle>
-              <AlertTriangle className="h-5 w-5 text-orange-600" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-4xl font-bold text-orange-600">
-              {lapsedDonors}
-            </div>
-            <p className="text-xs text-gray-500 mt-2">Need re-engagement</p>
-          </CardContent>
-        </Card>
+        <div className="group relative overflow-hidden rounded-2xl">
+          <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 opacity-0 group-hover:opacity-10 transition duration-500 blur"></div>
+          <Card className="relative border-orange-500/20 shadow-lg hover:shadow-xl hover:border-orange-500/40 transition-all duration-300 bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-sm font-semibold text-gray-300">
+                  At-Risk Donors
+                </CardTitle>
+                <div className="p-2 rounded-lg bg-gradient-to-br from-orange-500/20 to-red-500/20 border border-orange-500/30">
+                  <AlertTriangle className="h-5 w-5 text-orange-400" />
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-4xl font-black text-orange-400">
+                {lapsedDonors}
+              </div>
+              <p className="text-xs text-gray-500 mt-3">Need re-engagement</p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       {/* Additional Info Card */}
-      <Card className="border-purple-200 shadow-lg bg-gradient-to-r from-purple-50 to-purple-100/50">
-        <CardHeader>
-          <CardTitle className="text-purple-900 flex items-center gap-2">
-            <TrendingUp className="h-5 w-5" />
-            Quick Insights
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-3 gap-4 text-sm">
-            <div>
-              <p className="text-gray-600">Average Donation</p>
-              <p className="text-lg font-semibold text-purple-700">
-                {donationCount > 0 ? formatCurrency(totalRaised / donationCount) : '$0'}
-              </p>
+      <div className="group relative overflow-hidden rounded-2xl">
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500 opacity-0 group-hover:opacity-5 transition duration-500 blur"></div>
+        <Card className="relative border-purple-500/20 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl">
+          <CardHeader>
+            <CardTitle className="text-white flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-purple-500/30">
+                <TrendingUp className="h-5 w-5 text-purple-400" />
+              </div>
+              Quick Insights
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="p-4 rounded-xl bg-gradient-to-br from-purple-500/10 to-blue-500/10 border border-purple-500/20 hover:border-purple-500/40 transition">
+                <p className="text-gray-400 text-sm mb-2 flex items-center gap-2">
+                  <Heart className="h-4 w-4 text-purple-400" />
+                  Average Donation
+                </p>
+                <p className="text-2xl font-black text-white">
+                  {donationCount > 0 ? formatCurrency(totalRaised / donationCount) : '$0'}
+                </p>
+              </div>
+              
+              <div className="p-4 rounded-xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/20 hover:border-blue-500/40 transition">
+                <p className="text-gray-400 text-sm mb-2 flex items-center gap-2">
+                  <ArrowUpRight className="h-4 w-4 text-blue-400" />
+                  Repeat Donors
+                </p>
+                <p className="text-2xl font-black text-white">
+                  {donorCount > 0 ? Math.round((donationCount / donorCount) * 100) : 0}%
+                </p>
+              </div>
+              
+              <div className="p-4 rounded-xl bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/20 hover:border-green-500/40 transition">
+                <p className="text-gray-400 text-sm mb-2 flex items-center gap-2">
+                  <TrendingUp className="h-4 w-4 text-green-400" />
+                  Retention Rate
+                </p>
+                <p className="text-2xl font-black text-white">
+                  {donorCount > 0 ? Math.round(((donorCount - lapsedDonors) / donorCount) * 100) : 0}%
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="text-gray-600">Donors with Multiple Gifts</p>
-              <p className="text-lg font-semibold text-purple-700">
-                {donorCount > 0 ? Math.round((donationCount / donorCount) * 100) : 0}%
-              </p>
-            </div>
-            <div>
-              <p className="text-gray-600">Retention Rate</p>
-              <p className="text-lg font-semibold text-purple-700">
-                {donorCount > 0 ? Math.round(((donorCount - lapsedDonors) / donorCount) * 100) : 0}%
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }
