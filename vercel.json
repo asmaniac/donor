@@ -6,7 +6,7 @@
   "regions": ["iad1"],
   "env": {
     "DATABASE_URL": "@database_url",
-    "NEXT_PUBLIC_APP_URL": "@app_url",
+    "NEXT_PUBLIC_APP_URL": "@next_public_app_url",
     "OPENAI_API_KEY": "@openai_api_key"
   }
 }
