@@ -14,7 +14,7 @@ export default function HomePage() {
 
       {/* Navigation */}
       <nav className="relative z-10 border-b border-purple-500/20 bg-slate-900/40 backdrop-blur-xl shadow-2xl">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-gradient-to-br from-purple-400 to-blue-500">
               <Sparkles className="h-6 w-6 text-white" />
@@ -23,15 +23,24 @@ export default function HomePage() {
               DonorConnect
             </h1>
           </div>
-          <div className="flex gap-3">
+          <div className="flex items-center gap-1 bg-slate-800/50 p-1 rounded-lg border border-purple-500/20">
             <Link href="/about">
-              <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-purple-500/20">About</Button>
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-xs text-gray-300 hover:text-white hover:bg-purple-500/30 border border-transparent hover:border-purple-500/30">About</Button>
             </Link>
             <Link href="/why-donorconnect">
-              <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-purple-500/20">Why DonorConnect</Button>
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-xs text-gray-300 hover:text-white hover:bg-purple-500/30 border border-transparent hover:border-purple-500/30">Why</Button>
+            </Link>
+            <Link href="/ai-policy">
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-xs text-gray-300 hover:text-white hover:bg-purple-500/30 border border-transparent hover:border-purple-500/30">AI Policy</Button>
+            </Link>
+            <Link href="/evidence">
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-xs text-gray-300 hover:text-white hover:bg-purple-500/30 border border-transparent hover:border-purple-500/30">Evidence</Button>
+            </Link>
+            <Link href="/reflection">
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-xs text-gray-300 hover:text-white hover:bg-purple-500/30 border border-transparent hover:border-purple-500/30">Reflection</Button>
             </Link>
             <Link href="/login">
-              <Button className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 shadow-lg shadow-purple-500/50 text-white font-medium">
+              <Button size="sm" className="h-8 px-4 text-xs bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 shadow-lg shadow-purple-500/50 text-white font-medium ml-1">
                 Get Started
               </Button>
             </Link>

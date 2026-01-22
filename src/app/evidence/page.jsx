@@ -2,13 +2,16 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Sparkles, CheckCircle, Zap, FileText } from 'lucide-react'
+import { getSessionUser } from '@/lib/session'
+import { LogoutButton } from '@/components/logout-button'
 
-export default function EvidencePage() {
+export default async function EvidencePage() {
+  const user = await getSessionUser()
   return (
     <div className="min-h-screen">
       {/* Navigation */}
       <nav className="relative z-20 border-b border-purple-500/20 bg-slate-900/40 backdrop-blur-xl shadow-2xl">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
           <Link href="/" className="flex items-center gap-2 group">
             <div className="p-2 rounded-lg bg-gradient-to-br from-purple-400 to-blue-500 group-hover:shadow-lg group-hover:shadow-purple-500/50 transition">
               <Sparkles className="h-5 w-5 text-white" />
@@ -17,13 +20,34 @@ export default function EvidencePage() {
               DonorConnect
             </h1>
           </Link>
-          <div className="flex gap-3">
+          <div className="flex items-center gap-1 bg-slate-800/50 p-1 rounded-lg border border-purple-500/20">
             <Link href="/">
-              <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-purple-500/20">Home</Button>
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-xs text-gray-300 hover:text-white hover:bg-purple-500/30 border border-transparent hover:border-purple-500/30">Home</Button>
             </Link>
-            <Link href="/login">
-              <Button className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-medium">Login</Button>
+            <Link href="/about">
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-xs text-gray-300 hover:text-white hover:bg-purple-500/30 border border-transparent hover:border-purple-500/30">About</Button>
             </Link>
+            <Link href="/why-donorconnect">
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-xs text-gray-300 hover:text-white hover:bg-purple-500/30 border border-transparent hover:border-purple-500/30">Why</Button>
+            </Link>
+            <Link href="/ai-policy">
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-xs text-gray-300 hover:text-white hover:bg-purple-500/30 border border-transparent hover:border-purple-500/30">AI Policy</Button>
+            </Link>
+            <Link href="/reflection">
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-xs text-gray-300 hover:text-white hover:bg-purple-500/30 border border-transparent hover:border-purple-500/30">Reflection</Button>
+            </Link>
+            {user ? (
+              <>
+                <span className="text-xs text-gray-400 font-medium bg-gradient-to-r from-purple-300 to-blue-300 bg-clip-text text-transparent px-2">
+                  {user.firstName} {user.lastName}
+                </span>
+                <LogoutButton />
+              </>
+            ) : (
+              <Link href="/login">
+                <Button size="sm" className="h-8 px-4 text-xs bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 shadow-lg shadow-purple-500/50 text-white font-medium ml-1">Login</Button>
+              </Link>
+            )}
           </div>
         </div>
       </nav>
@@ -177,8 +201,26 @@ export default function EvidencePage() {
                 </div>
                 <div className="p-4 rounded-lg bg-gradient-to-br from-green-500/10 to-purple-500/10 border border-green-500/20">
                   <h3 className="font-bold text-white mb-2">📚 GitHub Repository</h3>
-                  <p className="text-gray-400">
-                    (Add your GitHub repository URL here)
+                  <p className="text-cyan-400 hover:text-cyan-300 transition">
+                    <a href="[YOUR_GITHUB_REPO_URL]" target="_blank" rel="noopener noreferrer" className="underline">
+                      [YOUR_GITHUB_REPO_URL]
+                    </a>
+                  </p>
+                </div>
+                <div className="p-4 rounded-lg bg-gradient-to-br from-green-500/10 to-purple-500/10 border border-green-500/20">
+                  <h3 className="font-bold text-white mb-2">📋 Trello Board</h3>
+                  <p className="text-cyan-400 hover:text-cyan-300 transition">
+                    <a href="[YOUR_TRELLO_BOARD_URL]" target="_blank" rel="noopener noreferrer" className="underline">
+                      [YOUR_TRELLO_BOARD_URL]
+                    </a>
+                  </p>
+                </div>
+                <div className="p-4 rounded-lg bg-gradient-to-br from-green-500/10 to-purple-500/10 border border-green-500/20">
+                  <h3 className="font-bold text-white mb-2">📐 Wireframes</h3>
+                  <p className="text-cyan-400 hover:text-cyan-300 transition">
+                    <a href="[YOUR_WIREFRAMES_URL]" target="_blank" rel="noopener noreferrer" className="underline">
+                      [YOUR_WIREFRAMES_URL]
+                    </a>
                   </p>
                 </div>
               </CardContent>

@@ -257,5 +257,6 @@ ISC
 ## 🙏 Acknowledgments
 
 Built as a learning project to demonstrate modern full-stack web development with Next.js, PostgreSQL, and AI integration.
-#   T r i g g e r   r e b u i l d  
+#   T r i g g e r   r e b u i l d 
+ 
  
